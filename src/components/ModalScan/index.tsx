@@ -51,7 +51,9 @@ export default function ModalScan({ onClose, navigation}: ModalScanProps & Modal
   }
 
   function handleScanned({data}: ModalScanProps){
+    console.log(data);
     if(data!.length <= 5 || data!.length > 6){
+
       showErrorToast();
     }
     else{

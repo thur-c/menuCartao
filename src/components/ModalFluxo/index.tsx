@@ -14,13 +14,12 @@ interface ModalFluxoProps {
 export default function ModalFluxo({ modalizeRef }: ModalFluxoProps) {
   const [info, setInfo] = useState('');
 
-
-  function selectedStatus(inicio: string, fim:  string){
-    if (inicio != '' && fim != '') {
-      return 'finalizado';
-    }
-    else if (inicio != '' && fim == '') {
+  function selectedStatus(dataFim: string){
+    if (dataFim == '31/10/2023') {
       return 'em_processo';
+    }
+    else if (dataFim != '') {
+      return 'finalizado';
     }
     else{
       return 'nao_iniciado';
@@ -28,9 +27,9 @@ export default function ModalFluxo({ modalizeRef }: ModalFluxoProps) {
   }
 
 
-  function handleInfoFluxo(id: string){
-    id = info === id ? '' : id;
-    setInfo(id);
+  function handleInfoFluxo(name: string){
+    name = info === name ? '' : name;
+    setInfo(name);
   }
 
   return (
@@ -48,18 +47,19 @@ export default function ModalFluxo({ modalizeRef }: ModalFluxoProps) {
           contentContainerStyle={{alignItems: 'center', padding: 30, width: 700}}>
           <TimeLineView>
             {fluxo.map((item) => (
-              <CircleView key={item.id}>
+              <CircleView key={item.nome}>
 
                 <LineView>
 
-                  <Circle size={selectedStatus(item.inicio, item.fim)} color={selectedStatus(item.inicio, item.fim)}>
-                    {selectedStatus(item.inicio, item.fim) == 'finalizado' &&
+
+                  <Circle size={selectedStatus(item.info.dataFim)} color={selectedStatus(item.info.dataFim)}>
+                    {selectedStatus(item.info.dataFim) == 'finalizado' &&
                     <Image
                       style={{flex: 1, width: '100%'}}
                       source={require('../../assets/images/ok.png')}
                     />
                     }
-                    {selectedStatus(item.inicio, item.fim) == 'em_processo' &&
+                    {selectedStatus(item.info.dataFim) == 'em_processo' &&
                     <Image
                       style={{height: 20, width: 20}}
                       source={require('../../assets/images/tecido.png')}
@@ -68,46 +68,39 @@ export default function ModalFluxo({ modalizeRef }: ModalFluxoProps) {
                   </Circle>
 
 
-                  <Line color={selectedStatus(item.inicio, item.fim)}/>
+                  <Line color={selectedStatus(item.info.dataFim)}/>
                 </LineView>
 
                 <TouchableOpacity
-                  onPress={() => handleInfoFluxo(item.id)}
-                  disabled={selectedStatus(item.inicio, item.fim) == 'finalizado' ? false : true}
+                  style={{height: 75, minWidth: 150,  alignItems: 'flex-start', justifyContent: 'center'}}
+                  onPress={() => handleInfoFluxo(item.nome)}
+                  disabled={selectedStatus(item.info.dataFim) == 'finalizado' ? false : true}
                 >
 
-                  <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+                  <View style={{flexDirection: 'row', gap: 10, alignItems: 'center', }}>
 
                     <TextTimeLine
-                      size={selectedStatus(item.inicio, item.fim)}
-                      color={selectedStatus(item.inicio, item.fim)}
+                      size={selectedStatus(item.info.dataFim)}
+                      color={selectedStatus(item.info.dataFim)}
                     >
                       {
-                        info == item.id
-                          ?
-                          'Operador: ' + item.operador +
-                          '\n' +
-                          'Data: ' + item.data +
-                          '\n' +
-                          'Inicio: ' + item.inicio +
-                          '\n' +
-                          'Fim: ' + item.fim
+                        info == item.nome ?
+                          (
+                            <>
+
+                              <Text color={'#fff5'} size={12}>{item.info.operador != null && `Operador: ${item.info.operador}`} </Text>
+
+                            </>
+                          )
                           :
-                          item.processo
+                          item.nome
                       }
-                      {
-                        selectedStatus(item.inicio, item.fim) == 'em_processo' && item.operador != '' &&
-                        <Text size={12}>
-                          {'\n'}
-                          Operador: {item.operador}
-                          {'\n'}
-                          Data de inicio: {item.data + ' ' +item.inicio}
-                        </Text>
-                      }
+
+
                     </TextTimeLine>
 
                     {
-                      selectedStatus(item.inicio, item.fim) == 'finalizado' &&
+                      selectedStatus(item.info.dataFim) == 'finalizado' &&
                         <Ionicons
                           name='information-circle-outline'
                           color={'#fff'}

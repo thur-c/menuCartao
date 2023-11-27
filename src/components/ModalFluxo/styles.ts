@@ -50,6 +50,7 @@ interface StyleTextProps{
 }
 
 export const TextTimeLine = styled(Text)<StyleTextProps>`
+text-align: center;
 font-size: ${(props: StyleTextProps) =>{
     if (props.size == 'finalizado') {
       return 12;

@@ -8,6 +8,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import Main from './src/Screens/Main';
 import { RootStackParamList } from './src/@types/RootStackParamList';
 import Toast, { BaseToast, BaseToastProps, ErrorToast, InfoToast } from 'react-native-toast-message';
+import Graph from './src/components/ModalGraph';
+import ModalProblemas from './src/components/ModalProblemas';
 
 
 export default function App() {
@@ -22,8 +24,8 @@ export default function App() {
   function MyStack(){
     return(
       <Stack.Navigator screenOptions={{headerShown: false}}  >
-        <Stack.Screen  name='Home' component={Home}/>
         <Stack.Screen name='Main'component={Main}/>
+        <Stack.Screen  name='Home' component={Home}/>
       </Stack.Navigator>
     );
   }
@@ -82,7 +84,6 @@ export default function App() {
 
 
   return (
-
     <NavigationContainer>
       <StatusBar backgroundColor={'#172554'}/>
       <MyStack />

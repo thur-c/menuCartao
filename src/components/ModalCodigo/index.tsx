@@ -5,6 +5,7 @@ import { ButtonSubmit, CloseButton, Input, InputView, ModalBody } from './styles
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../@types/RootStackParamList';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface ModalCodigoProps{
 isModalVisible: boolean | number;
@@ -16,7 +17,13 @@ type ModalCodigoScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>
 export default function ModalCodigo({isModalVisible, onClose, navigation }: ModalCodigoProps & ModalCodigoScreenProps){
   const [codigo, setCodigo] = useState('');
   const [error, setError] = useState(false);
-
+  const storeData = async (value: string) => {
+    try {
+      await AsyncStorage.setItem('@codigo', value);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
 
   function handleCloseButton(){
@@ -30,6 +37,7 @@ export default function ModalCodigo({isModalVisible, onClose, navigation }: Moda
       setError(true);
     }
     else{
+      storeData(codigo);
       setCodigo('');
       setError(false);
       navigation.navigate('Main');

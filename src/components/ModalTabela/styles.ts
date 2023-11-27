@@ -10,8 +10,6 @@ min-height: 20px;
 text-align: center;
 `;
 
-
-
 export const TableView = styled.View`
 padding: 10px;
 `;
@@ -29,7 +27,6 @@ export const Cell = styled.View`
 align-items: center;
 justify-content: space-between;
 flex-direction: row;
-
 `;
 
 export const TRow = styled.View`
@@ -40,6 +37,7 @@ border-top-width: 0;
 border-bottom-left-radius: 6px;
 border-bottom-right-radius: 6px;
 `;
+
 export const Line = styled.View`
 flex: 1;
 width: 100%;

@@ -5,17 +5,18 @@ import { Animated, BackHandler, Modal, ScrollView, Text } from 'react-native';
 import Button from '../../components/Button';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Modalize } from 'react-native-modalize';
-
 import { RootStackParamList } from '../../@types/RootStackParamList';
 import ModalTabela from '../../components/ModalTabela';
-import { View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import ModalFluxo from '../../components/ModalFluxo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   ButtonView,
   FormView,
   MainContainer
 } from './styles';
-import { useFocusEffect } from '@react-navigation/native';
-import ModalFluxo from '../../components/ModalFluxo';
+import ModalGraph from '../../components/ModalGraph';
+import ModalProblemas from '../../components/ModalProblemas';
 
 type MainProps = NativeStackScreenProps<RootStackParamList, 'Main'>
 
@@ -23,8 +24,39 @@ type MainProps = NativeStackScreenProps<RootStackParamList, 'Main'>
 export default function Main({navigation}: MainProps){
   const modalizeRefTabela = useRef<Modalize>(null);
   const modalizeRefFluxo = useRef<Modalize>(null);
+  const modalizeRefProblemas = useRef<Modalize>(null);
+  const [isModalGraphVisible, setIsModalGraphVisible] = useState(false);
+  const [isModalProblemasVisible, setIsModalProblemasVisible] = useState(false);
+
   const [isSelectionModeEnabled, setIsSelectionModeEnabled] =
   React.useState(false);
+  const [cartao, setCartao] = useState('');
+
+  useEffect(() => {
+
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@codigo');
+        if (value !== null) {
+          setCartao(value);
+          console.log('logou');
+
+        }
+      } catch (e) {
+        return e;
+      }
+    };
+
+    getData();
+
+  }, []);
+
+  function handleCloseGraphModal(){
+    setIsModalGraphVisible(false);
+  }
+  function handleOpenModalProblemas(){
+    modalizeRefProblemas.current?.open();
+  }
 
   function handleOpenModalTabela(){
     modalizeRefTabela.current?.open();
@@ -57,6 +89,13 @@ export default function Main({navigation}: MainProps){
   return(
     <>
 
+      <ModalGraph
+        isModalVisible={isModalGraphVisible}
+        onClose={handleCloseGraphModal}
+      />
+
+
+
       <ScrollView style={{backgroundColor: '#172554'}}
         contentContainerStyle={{zIndex: 0}}
       >
@@ -64,7 +103,7 @@ export default function Main({navigation}: MainProps){
         <MainContainer>
 
           <FormView>
-            <Input title={'CARTÃO'} widht='93'>{mock[0].cartao}</Input>
+            <Input title={'CARTÃO'} widht='93'>{cartao}</Input>
             <Input title={'CLIENTE'} widht='93'>{mock[0].cliente}</Input>
             <Input title={'NOTA'} widht='45'>{mock[0].nota}</Input>
             <Input title={'EMISSÃO'} widht='45'>{mock[0].emissao}</Input>
@@ -85,9 +124,12 @@ export default function Main({navigation}: MainProps){
 
 
           </FormView>
+
           <ButtonView>
             <Button onPress={() => handleOpenModalTabela()}>Peças/Faturamento</Button>
             <Button onPress={() => handleOpenModalFluxo()}>Fluxo/Apontamento</Button>
+            <Button onPress={() => setIsModalGraphVisible(true)}>Datacolor</Button>
+            <Button  onPress={() => handleOpenModalProblemas()}>Reportar ou consultar problema</Button>
           </ButtonView>
 
 
@@ -100,6 +142,9 @@ export default function Main({navigation}: MainProps){
       />
       <ModalFluxo
         modalizeRef={modalizeRefFluxo}
+      />
+      <ModalProblemas
+        modalizeRef={modalizeRefProblemas}
       />
 
     </>

@@ -24,125 +24,145 @@ export const mock = [
 
 export const fluxo = [
   {
-    id: '0001',
-    processo: 'ESTOQUE',
-    data: '01/01/2023',
-    inicio: '10:30',
-    fim: '11:00',
-    operador: 'Lucas Silva',
+    nome: 'INICIO',
+    processo: 'RECEBIMENTO',
+    info: {
+      NF: '057324',
+      entrada: '31/10/2023',
+      digitado: '31/10/2023',
+      dataFim: '30/10/2023',
+
+    }
   },
+
   {
-    id: '0002',
-    processo: 'ESTOQUE ABRIR',
-    data: '01/01/2023',
-    inicio: '11:30',
-    fim: '12:00',
-    operador: 'Rafael Oliveira',
+    nome: 'SEPARAÇÃO',
+    processo: 'SEPARAR',
+    info:{
+      titulo: '',
+      dataInicio: '',
+      dataFim: '01/05/23 - 10:00:00',
+      operador: '',
+      largura: '',
+      gramatura: ''
+    }
   },
+
+
   {
-    id: '0003',
-    processo: 'TING.(1ª. FIBRA)',
-    data: '01/01/2023',
-    inicio: '12:30',
-    fim: '13:00',
-    operador: 'Pedro Santos',
+    nome: 'BOX (ESTOQUE)',
+    processo: '',
+    info:{
+      titulo: 'BOX A25',
+      dataInicio: '',
+      dataFim: '01/05/23 - 10:00:00',
+      operador: '',
+      largura: '',
+      gramatura: ''
+    }
   },
+
   {
-    id: '0004',
-    processo: 'CENTRIFUGAR',
-    data: '01/01/2023',
-    inicio: '13:30',
-    fim: '14:00',
-    operador: 'João Pereira',
+    nome: 'PREPARAÇÃO',
+    processo: 'DESENROLAR',
+    info: {
+      titulo: 'DESENROLADEIRA 1',
+      dataInicio: '04/05/23 - 10:00:00',
+      dataFim: '04/05/23 - 10:28:00',
+      operador: 'Matheus',
+      largura: '',
+      gramatura: ''
+    }
   },
+
   {
-    id: '0005',
-    processo: 'ACABTO. FINAL',
-    data: '01/01/2023',
-    inicio: '14:30',
-    fim: '',
-    operador: 'Mateus Ferreira',
+    nome: 'BOX (PREPARAÇÃO)',
+    processo: '',
+    info:{
+      titulo: 'BOX F09',
+      dataInicio: '',
+      dataFim: '04/05/23 - 10:30:00',
+      operador: '',
+      largura: '',
+      gramatura: ''
+    }
   },
+
   {
-    id: '0006',
-    processo: 'SALA DE PANO',
-    data: '',
-    inicio: '',
-    fim: '',
-    operador: 'Gustavo Oliveira',
+    nome: 'TINGIMENTO',
+    processo: 'TING 1 FIBRA',
+    info: {
+      titulo: 'HT08 - 1001 (PROG)',
+      dataInicio: '05/05/23 - 12:00:00',
+      dataFim: '05/05/23 - 15:00:00',
+      operador: 'JOÃO',
+      largura: '',
+      gramatura: ''
+    }
   },
+
   {
-    id: '0007',
-    processo: 'AO CLIENTE',
-    data: '',
-    inicio: '',
-    fim: '',
-    operador: 'Bruno Silva',
+    nome: 'PRÉ ACABAMENTO',
+    processo: 'DESTORCER',
+    info: {
+      titulo: 'DESTORCEDEIRA 1',
+      dataInicio: '05/05/23 - 12:00:00',
+      dataFim: '05/05/23 - 15:00:00',
+      operador: 'João',
+      largura: '1.78(1.80)',
+      gramatura: '150 (160)'
+    }
   },
+
   {
-    id: '0008',
-    processo: 'FINAL',
-    data: '',
-    inicio: '',
-    fim: '',
-    operador: 'Marcelo Pereira',
+    nome: 'BOX (ACABAMENTO)',
+    processo: '',
+    info:{
+      titulo: 'BOX Y5',
+      dataInicio: '',
+      dataFim: '04/05/23 - 10:30:00',
+      operador: '',
+      largura: '',
+      gramatura: ''
+    }
   },
-  // {
-  //   id: '0009',
-  //   processo: 'LALAL',
-  //   data: '01/01/2023',
-  //   inicio: '',
-  //   fim: '',
-  // },
-  // {
-  //   id: '0010',
-  //   processo: 'OOO',
-  //   data: '01/01/2023',
-  //   inicio: '',
-  //   fim: '',
-  // },
-  // {
-  //   id: '0011',
-  //   processo: 'AAA',
-  //   data: '01/01/2023',
-  //   inicio: '',
-  //   fim: '',
-  // },
-  // {
-  //   id: '0012',
-  //   processo: 'BBB',
-  //   data: '01/01/2023',
-  //   inicio: '',
-  //   fim: '',
-  // },
-  // {
-  //   id: '0013',
-  //   processo: 'BBBCC',
-  //   data: '01/01/2023',
-  //   inicio: '',
-  //   fim: '',
-  // },
-  // {
-  //   id: '0014',
-  //   processo: 'BBBCC',
-  //   data: '01/01/2023',
-  //   inicio: '',
-  //   fim: '',
-  // },
-  // {
-  //   id: '0015',
-  //   processo: 'BBBCC',
-  //   data: '01/01/2023',
-  //   inicio: '',
-  //   fim: '',
-  // },
-  // {
-  //   id: '0016',
-  //   processo: 'BBBCC',
-  //   data: '01/01/2023',
-  //   inicio: '',
-  //   fim: '',
-  // },
+
+  {
+    nome: 'ACABAMENTO',
+    processo: 'ACBTO FINAL',
+    info: {
+      titulo: 'RAMA 1 - (PROG)',
+      dataInicio: '05/05/23 - 12:00:00',
+      dataFim: '05/05/23 - 15:00:00',
+      operador: 'José',
+      largura: '1.78(1.80)',
+      gramatura: '150 (160)'
+    }
+  },
+
+  {
+    nome: 'EXPEDIÇÃO',
+    processo: '',
+    info: {
+      titulo: 'PESAGEM',
+      dataInicio: '',
+      dataFim: '05/05/23 - 12:00:00',
+      operador: 'José',
+      largura: '',
+      gramatura: ''
+    }
+  },
+
+  {
+    nome: 'AO CLIENTE',
+    info: {
+
+      NF: '057324',
+      dataEmissao: '10/10/2023',
+      dataFim: '31/10/2023',
+
+    }
+  },
 ];
 
 export const values = [
@@ -326,89 +346,15 @@ export const values = [
     maq: '01'
 
   },
-  {
-    numero: '21',
-    peça: '908242',
-    peso: '14.850',
-    larg: '2,00',
-    compr: '87,35',
-    maq: '01'
-
-  },
-  {
-    numero: '22',
-    peça: '908242',
-    peso: '14.850',
-    larg: '2,00',
-    compr: '87,35',
-    maq: '01'
-
-  },
-  {
-    numero: '23',
-    peça: '908242',
-    peso: '14.850',
-    larg: '2,00',
-    compr: '87,35',
-    maq: '01'
-
-  },
-  {
-    numero: '24',
-    peça: '908242',
-    peso: '14.850',
-    larg: '2,00',
-    compr: '87,35',
-    maq: '01'
-
-  },
-  {
-    numero: '25',
-    peça: '908242',
-    peso: '14.850',
-    larg: '2,00',
-    compr: '87,35',
-    maq: '01',
-  },
-  {
-    numero: '26',
-    peça: '908242',
-    peso: '14.850',
-    larg: '2,00',
-    compr: '87,35',
-    maq: '01',
-  },
-  {
-    numero: '27',
-    peça: '908242',
-    peso: '14.850',
-    larg: '2,00',
-    compr: '87,35',
-    maq: '01',
-  },
-  {
-    numero: '28',
-    peça: '908242',
-    peso: '14.850',
-    larg: '2,00',
-    compr: '87,35',
-    maq: '01',
-  },
-  {
-    numero: '29',
-    peça: '908242',
-    peso: '14.850',
-    larg: '2,00',
-    compr: '87,35',
-    maq: '01',
-  },
-  {
-    numero: '30',
-    peça: '908242',
-    peso: '14.850',
-    larg: '2,00',
-    compr: '87,35',
-    maq: '01',
-  },
 ];
 
+
+// {
+//   selectedStatus(item.inicio, item.fim) == 'em_processo' && item.operador != '' &&
+//   <Text size={12}>
+//     {'\n'}
+//     Operador: {item.operador}
+//     {'\n'}
+//     Data de inicio: {item.data + ' ' +item.inicio}
+//   </Text>
+// }

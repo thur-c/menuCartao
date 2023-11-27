@@ -24,7 +24,7 @@ export default function ModalTabela({ modalizeRef }: ModalTabelaProps) {
       modalStyle={{ backgroundColor: '#333', padding: 20 }}
     >
 
-      <TableView style={{height: 0.9 * windowHeight, justifyContent: 'center'}}>
+      <TableView style={{height: 0.8 * windowHeight, justifyContent: 'center'}}>
 
         <THeader>
           <Cell>

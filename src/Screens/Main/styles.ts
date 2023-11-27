@@ -15,7 +15,7 @@ export const FormView = styled.View`
 `;
 
 
-export const ButtonView= styled.View`
+export const ButtonView = styled.View`
   margin-top: 10px;
   width: 100%;
   align-items: center;
