@@ -13,6 +13,7 @@ interface ModalFluxoProps {
 
 export default function ModalFluxo({ modalizeRef }: ModalFluxoProps) {
   const [info, setInfo] = useState('');
+  const [show, setShowInfo] = useState(false);
 
   function selectedStatus(dataFim: string){
     if (dataFim == '31/10/2023') {
@@ -28,8 +29,7 @@ export default function ModalFluxo({ modalizeRef }: ModalFluxoProps) {
 
 
   function handleInfoFluxo(name: string){
-    name = info === name ? '' : name;
-    setInfo(name);
+    setShowInfo(true);
   }
 
   return (
@@ -67,8 +67,8 @@ export default function ModalFluxo({ modalizeRef }: ModalFluxoProps) {
                     }
                   </Circle>
 
-
                   <Line color={selectedStatus(item.info.dataFim)}/>
+
                 </LineView>
 
                 <TouchableOpacity
@@ -83,18 +83,8 @@ export default function ModalFluxo({ modalizeRef }: ModalFluxoProps) {
                       size={selectedStatus(item.info.dataFim)}
                       color={selectedStatus(item.info.dataFim)}
                     >
-                      {
-                        info == item.nome ?
-                          (
-                            <>
 
-                              <Text color={'#fff5'} size={12}>{item.info.operador != null && `Operador: ${item.info.operador}`} </Text>
-
-                            </>
-                          )
-                          :
-                          item.nome
-                      }
+                      {item.nome}
 
 
                     </TextTimeLine>
@@ -109,6 +99,13 @@ export default function ModalFluxo({ modalizeRef }: ModalFluxoProps) {
 
                     }
                   </View>
+
+                  <Text color={'#fff5'} size={12}>
+                    Inicio: 01/01/2024 10:00
+                    {'\n'}
+                    Fim: 02/01/2024 05:00
+                  </Text>
+
                 </TouchableOpacity>
               </CircleView>
             ))}

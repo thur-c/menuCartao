@@ -4,7 +4,7 @@ import { Text } from '../../components/Text';
 export const MainContainer = styled.View`
   align-items: center;
   justify-content: center;
-  background-color: #0009;
+  background-color: rgba(0,0,0,0.8);
   flex: 1;
 `;
 
@@ -15,7 +15,7 @@ export const TextLabel = styled(Text)`
 
 export const ModalContainer = styled.View`
   border-radius: 12px;
-  background-color: rgba(0,0,8,0.8);
+  background-color: #082f49;
   width: 380px;
   max-height: 750px;
   align-items: center;

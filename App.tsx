@@ -23,7 +23,7 @@ export default function App() {
 
   function MyStack(){
     return(
-      <Stack.Navigator screenOptions={{headerShown: false}}  >
+      <Stack.Navigator screenOptions={{headerShown: false, animationEnabled: true}} >
         <Stack.Screen name='Main'component={Main}/>
         <Stack.Screen  name='Home' component={Home}/>
       </Stack.Navigator>
@@ -84,8 +84,8 @@ export default function App() {
 
 
   return (
-    <NavigationContainer>
-      <StatusBar backgroundColor={'#172554'}/>
+    <NavigationContainer >
+      <StatusBar backgroundColor={'#1c1917'}/>
       <MyStack />
       <Toast
 
@@ -93,4 +93,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-

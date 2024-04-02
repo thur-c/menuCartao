@@ -28,10 +28,9 @@ export default function ModalTabela({ modalizeRef }: ModalTabelaProps) {
 
         <THeader>
           <Cell>
+            <TableText>Peça</TableText>
             <TableText>Nº</TableText>
             <TableText>Peso</TableText>
-            <TableText>Peça</TableText>
-            <TableText>Larg.</TableText>
             <TableText>Compr.</TableText>
             <TableText>Máq.</TableText>
           </Cell>
@@ -42,10 +41,9 @@ export default function ModalTabela({ modalizeRef }: ModalTabelaProps) {
             {values.map((item) => (
               <View key={item.numero}>
                 <Cell>
-                  <TableText>{item.numero}</TableText>
                   <TableText>{item.peça}</TableText>
+                  <TableText>{item.numero}</TableText>
                   <TableText>{item.peso}</TableText>
-                  <TableText>{item.larg}</TableText>
                   <TableText>{item.compr}</TableText>
                   <TableText>{item.maq}</TableText>
                 </Cell>

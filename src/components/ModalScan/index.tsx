@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { BackHandler } from 'react-native';
+import { Alert, BackHandler } from 'react-native';
 import { CameraView, CloseButton, ModalBody, Overlay1, Overlay2 } from './styles';
-import { Camera } from 'expo-camera';
+import { Camera, CameraType, WhiteBalance } from 'expo-camera';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../@types/RootStackParamList';
 import { Ionicons } from '@expo/vector-icons';
@@ -86,9 +86,14 @@ export default function ModalScan({ onClose, navigation}: ModalScanProps & Modal
         />
       </CloseButton>
 
-      <Overlay1/>
-      <CameraView onBarCodeScanned={(data: ModalScanProps) => handleScanned(data)}/>
-      <Overlay2/>
+      {/* <Overlay1/> */}
+      {/* <CameraView onBarCodeScanned={(data: ModalScanProps) => handleScanned(data)} /> */}
+      {/* <Overlay2/> */}
+
+
+
+      <Camera  whiteBalance={WhiteBalance.auto}  onBarCodeScanned={(data) => Alert.alert(data.data)} style={{flex: 1, width: '100%'}} type={CameraType.front}></Camera>
+
 
     </ModalBody>
   );

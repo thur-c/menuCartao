@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, View } from 'react-native';
+import { Image, Modal, View } from 'react-native';
 
 import {
   ModalContainer,
@@ -24,6 +24,7 @@ import {
   ButtonChangeTypeBlue
 } from './styles';
 import { Text } from '../../components/Text';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface ModalGraphProps{
   isModalVisible: boolean;
@@ -49,7 +50,10 @@ export default function ModalGraph({isModalVisible, onClose}: ModalGraphProps){
       visible={isModalVisible}
       onRequestClose={onClose}
     >
+
       <MainContainer>
+
+
         <ModalContainer >
           <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
             <GraphContainer>

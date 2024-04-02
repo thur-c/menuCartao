@@ -6,7 +6,7 @@ export const mock = [
     emissao: '10/10/2023',
     cor: '23 / S.04 - ROXO 23',
     art: '2090',
-    amostraCor: 'rgb(255,25,150)',
+    amostraCor: 'rgb(10,500,0)',
     largCru: '1,92',
     largSolicitada: '1,60',
     largRealizada: '0,00',

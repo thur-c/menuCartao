@@ -5,12 +5,11 @@ export const MainContainer = styled.View`
   align-items: center;
   justify-content: center;
   align-items: center;
-  padding: 30px;
   z-index: -1;
   position: relative;
 `;
 
-export const CardContainer = styled.View`
+export const CardContainer = styled.TouchableOpacity`
   justify-content: center;
   width: 300px;
   min-height: 150px;
@@ -26,15 +25,30 @@ export const CardContainer = styled.View`
 
 export const ReportButton = styled.TouchableOpacity`
   z-index: 1;
-  bottom: 40px;
+  bottom: 30px;
   right: 10px;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   position: absolute;
-  background-color: transparent;
+  background-color: #888;
   border-radius: 30px;
-  box-shadow: 5px 5px 8px rgba(0, 0, 0, 1);
+  box-shadow: 5px 5px 8px rgb(0, 0, 0);
   elevation: 8;
   justify-content: center;
   align-items: center;
+`;
+export const LabelReport = styled.View`
+  position: absolute;
+  min-width: 150px;
+  height: 48px;
+  top: -50px;
+`;
+export const ReportView = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  max-width: 700px;
+  max-height: 700px;
+  padding: 30px;
 `;

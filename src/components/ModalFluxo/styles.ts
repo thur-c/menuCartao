@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { Text } from '../Text';
+import { Platform } from 'react-native';
 
 export const ModalView = styled.View`
   max-height: 700px;
@@ -117,8 +118,9 @@ export const Circle = styled.View<StyleCircleProps>`
   border-radius: 999px;
   justify-content: center;
   align-items: center;
-  box-shadow: 10px 5px 5px black;
-  elevation: 5;
+  box-shadow: 3px 3px 10px black;
+  ${Platform.OS === 'ios' ? '' : 'elevation: 5;'}
+
 
 
 `;
