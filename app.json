@@ -22,14 +22,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#e6e6e6"
       },
-      "package": "com.thur_c.menuCartao"
+      "package": "com.seiren.cartaoinstrucao"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "5450a7d2-fa6e-4fbc-b591-81cea7abd69c"
+        "projectId": "1868824b-f261-494d-b7e5-1953c6f8cb83"
       }
     },
     "owner": "seiren"
