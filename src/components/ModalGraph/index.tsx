@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {  Image, Modal, TouchableOpacity, View } from 'react-native';
 import { Text } from '../../components/Text';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Ionicons } from '@expo/vector-icons';
 import {
   ModalContainer,
   GraphContainer,
@@ -24,11 +23,9 @@ import {
   GraphsView,
   TableView,
   THeader,
-  Tbody,
   TRow,
   Overlay,
 } from './styles';
-
 
 interface ModalGraphProps{
   isModalVisible: boolean;
@@ -75,7 +72,7 @@ export default function ModalGraph({isModalVisible, onClose, dataColorData}: Mod
     '50, 50, 50',   // Cinza escuro
   ];
 
-  function generateRandomColor(seed) {
+  function generateRandomColor(seed: number) {
     if (seed >= 0 && seed < colors.length) {
       return `rgb(${colors[seed]})`;
     } else {

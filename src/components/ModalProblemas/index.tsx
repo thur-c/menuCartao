@@ -1,13 +1,21 @@
 import { ScrollView, Image, View, TouchableOpacity, Alert } from 'react-native';
 import { Text } from '../Text';
-import { ButtonPhoto, ButtonProblem, ButtonSubmit, ButtonTakePhoto, CameraView, CardContainer, MainContainer, ReportView } from './styles';
 import { Modalize } from 'react-native-modalize';
 import { useEffect, useRef, useState } from 'react';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { Camera, FlashMode } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import * as Icons from '@expo/vector-icons';
 import LoaderScreen from '../LoaderScreen';
+import {
+  ButtonPhoto,
+  ButtonProblem,
+  ButtonSubmit,
+  ButtonTakePhoto,
+  CameraView,
+  CardContainer,
+  MainContainer,
+  ReportView
+} from './styles';
 
 interface ModalProblemasProps{
   modalizeRef: React.RefObject<Modalize>
@@ -170,7 +178,7 @@ export default function ModalProblemas({modalizeRef, longPress}: ModalProblemasP
 
 
               <ButtonPhoto onPress={() => handlePressCamera()}>
-                <FontAwesome5 name="camera" size={22} color="black" />
+                <Icons.FontAwesome5 name="camera" size={22} color="black" />
               </ButtonPhoto>
 
               <ButtonPhoto onPress={() => handlePressPicture()}>

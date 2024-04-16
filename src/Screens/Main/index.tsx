@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Input from '../../components/Input';
-import { Alert, Animated, BackHandler, Easing, ScrollView, TouchableOpacity } from 'react-native';
+import { Alert, Animated, BackHandler, Easing, ScrollView} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Modalize } from 'react-native-modalize';
 import { RootStackParamList } from '../../@types/RootStackParamList';
@@ -11,6 +11,8 @@ import ModalGraph from '../../components/ModalGraph';
 import ModalProblemas from '../../components/ModalProblemas';
 import { Text } from '../../components/Text';
 import { AntDesign } from '@expo/vector-icons';
+import { api } from '../../utils/api';
+import LoaderScreen from '../../components/LoaderScreen';
 import {
   ButtonMedidas,
   ButtonView,
@@ -21,8 +23,6 @@ import {
   ViewLarg,
   ViewMedidas
 } from './styles';
-import { api } from '../../utils/api';
-import LoaderScreen from '../../components/LoaderScreen';
 
 type MainProps = NativeStackScreenProps<RootStackParamList, 'Main'>
 
@@ -215,7 +215,7 @@ export default function Main({navigation}: MainProps){
 
           <FormView>
             <Input width={1} title={'CARTÃO'}>{cartao}</Input>
-            <Input width={1} title={'STATUS'} onPress={() => console.log()}>{status}</Input>
+            <Input width={1} title={'STATUS'}>{status}</Input>
             <Input width={1} title={'TIPO'}>{tipo}</Input>
             <Input width={3} title={'CLIENTE'}>{codCli}  -  {cliente}</Input>
             <Input width={1} title={'NOTA'}>{nota}</Input>

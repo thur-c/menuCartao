@@ -2,7 +2,7 @@ import { TouchableOpacity } from 'react-native';
 import { Text } from '../../components/Text';
 import { MainButton, MainContainer } from './styles';
 import ModalCodigo from '../../components/ModalCodigo';
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useState} from 'react';
 import ModalScan from '../../components/ModalScan';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../@types/RootStackParamList';
@@ -13,34 +13,23 @@ type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>
 
 export default function Home({navigation, route}: HomeProps){
   const {user} = useContext(LoginContext);
-
-
   const [showScreen, setShowScreen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(0);
-  const [loading, setLoading] = useState(true);
-
-
-
-
-
 
   function handleOpenCodigoModal(){
     setIsModalVisible(1);
-
   }
+
   function handleOpenScanModal(){
     setIsModalVisible(2);
     setShowScreen(true);
     setIsModalVisible(0);
-
-
   }
 
   function handleCloseModal(){
     setIsModalVisible(0);
     setShowScreen(false);
   }
-
 
   return(
     <>

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Text } from '../Text';
-import {  Modal, TextInput } from 'react-native';
+import {  Modal } from 'react-native';
 import { ButtonSubmit, CloseButton, Input, InputView, ModalBody } from './styles';
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';

@@ -3,7 +3,7 @@ import { CameraButton, CameraView, InputView, MainContainer } from './styles';
 import * as Icon from '@expo/vector-icons';
 import { BarCodeScanningResult, Camera, CameraType, FlashMode } from 'expo-camera';
 import { Text } from '../Text';
-import { useContext, useEffect, useState } from 'react';
+import { useContext,  useState } from 'react';
 import { api } from '../../utils/api';
 import LoaderScreen from '../LoaderScreen';
 import { LoginContext } from '../../context/loginContext';
@@ -11,7 +11,7 @@ import Toast from 'react-native-toast-message';
 
 
 export default function ModalCracha(){
-  const {user, hanldeSetUser} = useContext(LoginContext);
+  const {hanldeSetUser} = useContext(LoginContext);
 
   const [cameraType, setCameraType] = useState<CameraType | number>(0);
   const [flash, setFlash] = useState<FlashMode>(FlashMode.off);
@@ -29,7 +29,6 @@ export default function ModalCracha(){
   async  function handleScanned(codigo: BarCodeScanningResult){
     setLoading(true);
     setScanned(true);
-    console.log(codigo.data);
 
     await api.get(`Cracha/cracha-maquina?codBar=${codigo.data}&codMaquina=-X&deviceName=tbt`)
       .then((response) => {

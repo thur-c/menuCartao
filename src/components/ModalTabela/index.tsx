@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Dimensions, TouchableOpacity } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { Cell, TRow, THeader, TableView, TableText, CellHeader } from './styles';
+import { Cell, TRow, THeader, TableText, CellHeader } from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Ionicons } from '@expo/vector-icons';
-import { View } from 'react-native';
 import { Text } from '../Text';
 
 interface ModalTabelaProps {

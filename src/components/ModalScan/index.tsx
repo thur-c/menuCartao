@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import { Alert, BackHandler } from 'react-native';
 import { CameraButton, CameraView, CloseButton, ModalBody } from './styles';
-import { Camera, CameraType, FlashMode, WhiteBalance } from 'expo-camera';
+import { Camera, CameraType, FlashMode } from 'expo-camera';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../@types/RootStackParamList';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,7 +22,7 @@ type ModalScanScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 
 export default function ModalScan({ onClose }: ModalScanProps & ModalScanScreenProps){
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [, setHasPermission] = useState<boolean | null>(null);
   const navigation = useNavigation<any>();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');

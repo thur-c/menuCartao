@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Modalize } from 'react-native-modalize';
 import { TimeLineView, ModalView, Line, Circle, CircleView, LineView, TextTimeLine } from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Text } from '../Text';
 
