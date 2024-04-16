@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Cartão Info",
-    "slug": "menuCartao",
+    "name": "Cartão Instrução",
+    "slug": "cartao-instrucao",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,7 +20,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#000000"
+        "backgroundColor": "#e6e6e6"
       },
       "package": "com.thur_c.menuCartao"
     },
@@ -31,6 +31,7 @@
       "eas": {
         "projectId": "5450a7d2-fa6e-4fbc-b591-81cea7abd69c"
       }
-    }
+    },
+    "owner": "seiren"
   }
 }
