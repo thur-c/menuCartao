@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Image, Modal, View } from 'react-native';
-
+import React, { useEffect, useState } from 'react';
+import {  Image, Modal, TouchableOpacity, View } from 'react-native';
+import { Text } from '../../components/Text';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
 import {
   ModalContainer,
-  MainContainer,
   GraphContainer,
   LineX,
   LineY,
@@ -15,34 +16,73 @@ import {
   BigCircle,
   Ball,
   GraphBottomContainer,
-  GridYBottom,
   GraphLineXBottom,
   GraphLineYBottom,
   TextLabel,
-  ButtonChangeTypeRed,
-  ButtonsView,
-  ButtonChangeTypeBlue
+  GridXBottom,
+  TextYBottom,
+  GraphsView,
+  TableView,
+  THeader,
+  Tbody,
+  TRow,
+  Overlay,
 } from './styles';
-import { Text } from '../../components/Text';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 interface ModalGraphProps{
   isModalVisible: boolean;
   onClose: () => void;
+  dataColorData: DataColorProps | undefined;
 }
-export default function ModalGraph({isModalVisible, onClose}: ModalGraphProps){
-  const [opacityRed, setOpacityRed] = useState(2);
-  const [opacityBlue, setOpacityBlue] = useState(2);
 
-  function handleButtonChangeOpacity(selectedBall: number){
-    if (selectedBall === 9) {
-      setOpacityRed(9);
-      setOpacityBlue(2);
-    } else if (selectedBall === 2) {
-      setOpacityRed(2);
-      setOpacityBlue(9);
+type DataColorProps = [
+  string,
+  {
+    Data: string,
+    Tipo: string,
+    DL: string,
+    Da: string,
+    Db:string,
+    DC: string,
+    DH: string,
+    DE:string,
+    CMC: string,
+    Padrao: string,
+    DataP: string,
+    Texto: string,
+    RgbPadrao: string,
+    RgbAmostra: string
+}]
+export default function ModalGraph({isModalVisible, onClose, dataColorData}: ModalGraphProps){
+  const [showPadrao, setShowPadrao] = useState(false);
+  const table = dataColorData != undefined && Object.entries(dataColorData) as DataColorProps[];
+  const colors = [
+    '0, 150, 0',    // Verde
+    '250, 150, 0',  // Laranja
+    '200, 0, 150',  // Magenta
+    '0, 200, 200',  // Ciano
+    '100, 0, 0',    // Marrom
+    '200, 0, 0',    // Vermelho
+    '0, 0, 200',    // Azul
+    '0, 50, 0',    // Verde escuro
+    '0, 0, 100',    // Azul escuro
+    '100, 100, 0',  // Oliva
+    '100, 0, 100',  // Roxo
+    '0, 100, 100',  // Azul claro
+    '100, 100, 100',// Cinza
+    '150, 150, 150',// Cinza claro
+    '50, 50, 50',   // Cinza escuro
+  ];
+
+  function generateRandomColor(seed) {
+    if (seed >= 0 && seed < colors.length) {
+      return `rgb(${colors[seed]})`;
+    } else {
+      return null;
     }
   }
+
   return(
     <Modal
       animationType='fade'
@@ -51,153 +91,207 @@ export default function ModalGraph({isModalVisible, onClose}: ModalGraphProps){
       onRequestClose={onClose}
     >
 
-      <MainContainer>
+      <Overlay>
 
+        <ModalContainer>
 
-        <ModalContainer >
-          <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
-            <GraphContainer>
+          <TouchableOpacity
+            onPress={() => onClose()}
+            style={{right: 10, top: -30, position: 'absolute', backgroundColor: '#f00', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 20}}>
+            <Text weight={600}>Fechar</Text>
+          </TouchableOpacity>
+          {table &&
+            <>
+              <Text size={20} weight={600} style={{textAlign: 'center'}}>DATACOLOR</Text>
+              <GraphsView>
+                <View style={{alignItems: 'center', marginBottom: 20}}>
 
-              <GridX spacingX={32}/>
-              <GridX spacingX={72}/>
-              <GridX spacingX={112}/>
-              <GridX spacingX={152}/>
-              <GridX spacingX={192}/>
-              <GridX spacingX={232}/>
-              <GridX spacingX={272}/>
+                  <Text style={{marginLeft: 20}} weight={600}>+Δl</Text>
+                  <View style={{flexDirection: 'row'}}>
+                    <TextYBottom>
+                      <TextLabel size={14}>20</TextLabel>
+                      <TextLabel size={14}>15</TextLabel>
+                      <TextLabel size={14}>10</TextLabel>
+                      <TextLabel size={14}>5</TextLabel>
+                      <TextLabel size={14}>0,0</TextLabel>
+                      <TextLabel size={14}>-5</TextLabel>
+                      <TextLabel size={14}>-10</TextLabel>
+                      <TextLabel size={14}>-15</TextLabel>
+                      <TextLabel size={14}>-20</TextLabel>
+                    </TextYBottom>
 
-              <GridY spacingY={32}/>
-              <GridY spacingY={72}/>
-              <GridY spacingY={112}/>
-              <GridY spacingY={152}/>
-              <GridY spacingY={192}/>
-              <GridY spacingY={232}/>
-              <GridY spacingY={272}/>
+                    <GraphBottomContainer>
+                      <GraphLineXBottom/>
+                      <GraphLineYBottom/>
+                      <GridXBottom spacingX={17}/>
+                      <GridXBottom spacingX={45}/>
+                      <GridXBottom spacingX={71}/>
+                      <GridXBottom spacingX={99}/>
+                      <GridXBottom spacingX={125}/>
+                      <GridXBottom spacingX={151}/>
+                      <GridXBottom spacingX={177}/>
+                      <GridXBottom spacingX={203}/>
+                      <GridXBottom spacingX={229}/>
+                      {
+                        table && table.map(([,item], index) =>
+                          (
+                            <Ball
+                              key={index}
+                              y={121 + (Number(item.DL.replace(',','.')) / 5 * (-27))}
+                              x={20 }
+                              color={generateRandomColor(index)}
+                            />
 
+                          )
+                        )
+                      }
 
-              <SmallCircle/>
-              <BigCircle/>
+                    </GraphBottomContainer>
 
-              <LineY color={'#e9e902'}/>
+                  </View>
 
-              <View style={{flex: 1, flexDirection: 'row'}}>
+                  <Text style={{marginLeft: 20}} weight={600}>-Δl</Text>
 
-                <LineX color={'green'}/>
-                <LineX color={'#f00'}/>
+                </View>
+                <View style={{alignItems: 'center'}}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
+                    <GraphContainer>
+                      <GridX spacingX={18} />
+                      <GridX spacingX={54} />
+                      <GridX spacingX={90} />
+                      <GridX spacingX={126}/>
+                      <GridX spacingX={162}/>
+                      <GridX spacingX={198}/>
+                      <GridX spacingX={234}/>
 
-              </View>
+                      <GridY spacingY={18} />
+                      <GridY spacingY={54} />
+                      <GridY spacingY={90} />
+                      <GridY spacingY={126}/>
+                      <GridY spacingY={162}/>
+                      <GridY spacingY={198}/>
+                      <GridY spacingY={234}/>
 
-              <LineY color={'#000FFF'}/>
+                      <SmallCircle/>
+                      <BigCircle/>
 
-              <Ball
-                top={112-4}
-                left={152-4}
-                color={`rgba(255,0,0,0.${opacityRed})`}
-              />
+                      <LineY color={'#e9e902'}/>
 
-              <Ball
-                top={132-4}
-                left={132-4}
-                color={`rgba(0, 0, 255,0.${opacityBlue})`}
-              />
+                      <View style={{flex: 1, flexDirection: 'row'}}>
+                        <LineX color={'green'}/>
+                        <LineX color={'#f00'}/>
+                      </View>
+                      <LineY color={'#000FFF'}/>
 
+                      {
+                        table && table.map(([,item], index) =>
+                          (
+                            <Ball
+                              key={index}
+                              y={121 + (Number(item.Db.replace(',','.')) * (-37))}
+                              x={121 + (Number(item.Da.replace(',','.')) * 36)}
+                              color={generateRandomColor(index)}
+                            />
 
-
-            </GraphContainer>
-
-            <TextY>
-              <TextLabel>-3</TextLabel>
-              <TextLabel>-2</TextLabel>
-              <TextLabel>-1</TextLabel>
-              <TextLabel>-Δa</TextLabel>
-              <TextLabel> 1</TextLabel>
-              <TextLabel> 2</TextLabel>
-              <TextLabel> 3</TextLabel>
-            </TextY>
-
-          </View>
-
-          <TextX>
-            <TextLabel>-3</TextLabel>
-            <TextLabel>-2</TextLabel>
-            <TextLabel>-1</TextLabel>
-            <TextLabel>-Δb</TextLabel>
-            <TextLabel> 1</TextLabel>
-            <TextLabel> 2</TextLabel>
-            <TextLabel> 3</TextLabel>
-          </TextX>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-
-            <TextLabel style={{marginTop: 30}}>-ΔL</TextLabel>
-            <GraphBottomContainer>
-
-              <GridYBottom spacingY={10}/>
-              <GridYBottom spacingY={44}/>
-              <GridYBottom spacingY={78}/>
-              <GridYBottom spacingY={112}/>
-              <GridYBottom spacingY={146}/>
-              <GridYBottom spacingY={180}/>
-              <GridYBottom spacingY={214}/>
-              <GridYBottom spacingY={248}/>
-              <GridYBottom spacingY={282}/>
-
-              <GraphLineYBottom/>
-
-              <View style={{flex: 1, flexDirection: 'row'}}>
-
-                <GraphLineXBottom/>
-                <GraphLineXBottom/>
-
-              </View>
-
-              <GraphLineYBottom/>
-              <Ball
-                top={77-4}
-                left={145-4}
-                color={`rgba(255,0,0,0.${opacityRed})`}
-              />
-
-              <Ball
-                top={77-4}
-                left={128-4}
-                color={`rgba(0, 0, 255,0.${opacityBlue})`}
-              />
-
-            </GraphBottomContainer>
-            <TextLabel style={{marginTop: 30}}>ΔL</TextLabel>
-          </View>
-
-          <View style={{flexDirection: 'row', justifyContent: 'center', marginRight: 7, gap: 5}}>
-
-            <TextLabel>-20</TextLabel>
-            <TextLabel>-15</TextLabel>
-            <TextLabel>-10</TextLabel>
-            <TextLabel>-5</TextLabel>
-            <TextLabel> 0</TextLabel>
-            <TextLabel> 5</TextLabel>
-            <TextLabel>10</TextLabel>
-            <TextLabel>15</TextLabel>
-            <TextLabel>20</TextLabel>
-          </View>
-
-          <Text style={{marginTop: 30}} weight={600}>ALTERNAR TIPO: </Text>
-
-          <ButtonsView>
-
-            <ButtonChangeTypeRed onPress={() => handleButtonChangeOpacity(9)}>
-              <Text weight={600}>Ting.</Text>
-            </ButtonChangeTypeRed>
-
-            <ButtonChangeTypeBlue onPress={() => handleButtonChangeOpacity(2)}>
-              <Text weight={600}>Acab.</Text>
-            </ButtonChangeTypeBlue>
-          </ButtonsView>
+                          )
+                        )
+                      }
 
 
 
+
+
+                    </GraphContainer>
+                    <TextY>
+                      <TextLabel>3</TextLabel>
+                      <TextLabel>2</TextLabel>
+                      <TextLabel>1</TextLabel>
+                      <TextLabel size={12} weight={600}>Δa</TextLabel>
+                      <TextLabel>-1</TextLabel>
+                      <TextLabel>-2</TextLabel>
+                      <TextLabel>-3</TextLabel>
+                    </TextY>
+                  </View>
+
+                  <TextX>
+                    <TextLabel>-3</TextLabel>
+                    <TextLabel>-2</TextLabel>
+                    <TextLabel>-1</TextLabel>
+                    <TextLabel size={12} weight={600}>Δb</TextLabel>
+                    <TextLabel>1</TextLabel>
+                    <TextLabel>2</TextLabel>
+                    <TextLabel>3</TextLabel>
+                  </TextX>
+                </View>
+              </GraphsView>
+
+
+              <ScrollView
+                horizontal
+                contentContainerStyle={{width: '180%', padding: 10}}
+              >
+                <TableView>
+
+                  <THeader>
+                    <Text weight={600} size={12} style={{textAlign: 'center', flex: 1}}>STATUS</Text>
+                    <Text weight={600} size={12} style={{textAlign: 'center', flex: 1}}>DATA</Text>
+                    <Text weight={600} size={12} style={{textAlign: 'center', flex: 1}}>TIPO</Text>
+                    <Text weight={600} size={12} style={{textAlign: 'center', flex: 1}}>DL</Text>
+                    <Text weight={600} size={12} style={{textAlign: 'center', flex: 1}}>DA</Text>
+                    <Text weight={600} size={12} style={{textAlign: 'center', flex: 1}}>DB</Text>
+                    <Text weight={600} size={12} style={{textAlign: 'center', flex: 1}}>DC</Text>
+                    <Text weight={600} size={12} style={{textAlign: 'center', flex: 1}}>DH</Text>
+                    <Text weight={600} size={12} style={{textAlign: 'center', flex: 1}}>DE</Text>
+                    <Text weight={600} size={12} style={{textAlign: 'center', flex: 1}}>CMC</Text>
+                    <Text weight={600} size={12} style={{textAlign: 'center', flex: 1}}>PADRÃO</Text>
+                    <Text weight={600} size={12} style={{textAlign: 'center', flex: 1}}>DATA</Text>
+                  </THeader>
+
+                  <ScrollView>
+
+                    <View >
+                      {table && table.map(([,item], index) => (
+                        <TRow color={generateRandomColor(index)} key={index}>
+                          <View style={{ flex: 1, alignItems: 'center'}}>
+                            {item.Texto.split(' | ').pop() === 'Falha' ?
+                              <Image
+                                style={{width: 20, height: 20,borderRadius: 20,backgroundColor: '#000',}}
+                                source={require('../../assets/images/cancel.png')}
+                              />
+                              :
+                              <Image
+                                style={{width: 20, height: 20,borderRadius: 20,backgroundColor: '#000',}}
+                                source={require('../../assets/images/ok.png')}
+                              />
+                            }
+                          </View>
+                          <Text weight={600} size={11} style={{textAlign: 'center', flex: 1}}>{item.Data}</Text>
+                          <Text weight={600} size={11} style={{textAlign: 'center', flex: 1}}>{item.Tipo}</Text>
+                          <Text weight={600} size={11} style={{textAlign: 'center', flex: 1}}>{item.DL}</Text>
+                          <Text weight={600} size={11} style={{textAlign: 'center', flex: 1}}>{item.Da}</Text>
+                          <Text weight={600} size={11} style={{textAlign: 'center', flex: 1}}>{item.Db}</Text>
+                          <Text weight={600} size={11} style={{textAlign: 'center', flex: 1}}>{item.DC}</Text>
+                          <Text weight={600} size={11} style={{textAlign: 'center', flex: 1}}>{item.DH}</Text>
+                          <Text weight={600} size={11} style={{textAlign: 'center', flex: 1}}>{item.DE}</Text>
+                          <Text weight={600} size={11} style={{textAlign: 'center', flex: 1}}>{item.CMC}</Text>
+                          <Text weight={600} size={11} style={{textAlign: 'center', flex: 1,}}>{item.Padrao}</Text>
+                          <Text weight={600} size={11} style={{textAlign: 'center', flex: 1}}>{item.DataP}</Text>
+                        </TRow>
+                      ))}
+                    </View>
+
+                  </ScrollView>
+
+                </TableView>
+              </ScrollView>
+            </>
+          }
+          {table === false &&
+          <Text size={20} weight={600} style={{textAlign: 'center'}}>Nenhum dado encontrado</Text>
+
+          }
         </ModalContainer>
-      </MainContainer>
+      </Overlay>
     </Modal>
 
   );

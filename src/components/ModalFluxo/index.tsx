@@ -1,35 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modalize } from 'react-native-modalize';
 import { TimeLineView, ModalView, Line, Circle, CircleView, LineView, TextTimeLine } from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
-import { fluxo } from '../mock';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Text } from '../Text';
 
 interface ModalFluxoProps {
   modalizeRef: React.RefObject<Modalize>;
+  fluxoData: FluxoDataProps;
 }
+type FluxoDataProps = [
+  string,
+  {
+  Data: string,
+  Detalhes: string,
+  Fluxo: string,
+  Maquina: string,
+  Operador: string,
+  Processo: string,
+}]
 
-export default function ModalFluxo({ modalizeRef }: ModalFluxoProps) {
-  const [info, setInfo] = useState('');
-  const [show, setShowInfo] = useState(false);
+export default function ModalFluxo({ modalizeRef, fluxoData }: ModalFluxoProps) {
+  const [showInfoIndex, setShowInfoIndex] = useState<string | null>(null);
 
-  function selectedStatus(dataFim: string){
-    if (dataFim == '31/10/2023') {
-      return 'em_processo';
-    }
-    else if (dataFim != '') {
-      return 'finalizado';
-    }
-    else{
-      return 'nao_iniciado';
-    }
-  }
+  const fluxo = fluxoData != undefined && Object.entries(fluxoData) as FluxoDataProps[];
 
-
-  function handleInfoFluxo(name: string){
-    setShowInfo(true);
+  function handleInfoFluxo(index: string) {
+    setShowInfoIndex(prevIndex => (prevIndex === index ? null : index));
   }
 
   return (
@@ -39,6 +37,13 @@ export default function ModalFluxo({ modalizeRef }: ModalFluxoProps) {
       handlePosition="inside"
       handleStyle={{ backgroundColor: '#e1e1e1', width: 70 }}
       modalStyle={{ backgroundColor: '#333', padding: 20}}
+      HeaderComponent={(
+        <TouchableOpacity
+          onPress={() => modalizeRef.current?.close()}
+          style={{right: 10, top: -30, position: 'absolute', backgroundColor: '#f00', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 20}}>
+          <Text weight={600}>Fechar</Text>
+        </TouchableOpacity>
+      )}
     >
 
       <ModalView>
@@ -46,72 +51,102 @@ export default function ModalFluxo({ modalizeRef }: ModalFluxoProps) {
         <ScrollView style={{maxHeight: 700, width: 700}}
           contentContainerStyle={{alignItems: 'center', padding: 30, width: 700}}>
           <TimeLineView>
-            {fluxo.map((item) => (
-              <CircleView key={item.nome}>
+            {fluxo && fluxo.map(([index, item]) => (
+              <CircleView key={item.Processo}>
 
                 <LineView>
-
-
-                  <Circle size={selectedStatus(item.info.dataFim)} color={selectedStatus(item.info.dataFim)}>
-                    {selectedStatus(item.info.dataFim) == 'finalizado' &&
-                    <Image
-                      style={{flex: 1, width: '100%'}}
-                      source={require('../../assets/images/ok.png')}
-                    />
-                    }
-                    {selectedStatus(item.info.dataFim) == 'em_processo' &&
-                    <Image
-                      style={{height: 20, width: 20}}
-                      source={require('../../assets/images/tecido.png')}
-                    />
+                  <Circle
+                    color={item.Data.length > 1 ? '#0000' : '#222'}
+                    size={item.Data.length > 1 ? 20 : 20}>
+                    {item.Data.length > 1 ?
+                      <Image
+                        style={{flex: 1, width: '100%'}}
+                        source={require('../../assets/images/ok.png')}
+                      />
+                      :
+                      <Image
+                        style={{flex: 1, width: '100%'}}
+                        source={require('../../assets/images/black-circle-emoji.png')}
+                      />
                     }
                   </Circle>
-
-                  <Line color={selectedStatus(item.info.dataFim)}/>
-
+                  <Line />
                 </LineView>
 
-                <TouchableOpacity
-                  style={{height: 75, minWidth: 150,  alignItems: 'flex-start', justifyContent: 'center'}}
-                  onPress={() => handleInfoFluxo(item.nome)}
-                  disabled={selectedStatus(item.info.dataFim) == 'finalizado' ? false : true}
-                >
+                <ScrollView contentContainerStyle={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  maxWidth: 250,
+                  alignItems: 'center',
+                }}>
+                  <TouchableOpacity
+                    style={{ minWidth: 150, justifyContent: 'center', width: '100%'}}
+                    onPress={() => handleInfoFluxo(index)}
+                  >
 
-                  <View style={{flexDirection: 'row', gap: 10, alignItems: 'center', }}>
+                    {showInfoIndex != index &&
+                        <TextTimeLine
+                          color={item.Fluxo === 'Não' ? '#fff000' : '#fff'}
+                          size={14}>
+                          {item.Processo}
 
-                    <TextTimeLine
-                      size={selectedStatus(item.info.dataFim)}
-                      color={selectedStatus(item.info.dataFim)}
-                    >
-
-                      {item.nome}
-
-
-                    </TextTimeLine>
-
+                        </TextTimeLine>
+                    }
                     {
-                      selectedStatus(item.info.dataFim) == 'finalizado' &&
+                      showInfoIndex === index && (
+                        <TextTimeLine
+                          size={12}
+                          color={item.Fluxo === 'Não' ? '#fff000' : '#fff'}
+                        >
+                        OPERADOR:
+                          <Text style={{ fontSize: 12 }}> {item.Operador}</Text>
+                          {'\n'}
+                          {'\n'}
+                        DETALHES:
+                          {'\n'}
+                          <Text style={{ fontSize: 12 }}>{item.Detalhes.split('|').join('\n' + '\n')}</Text>
+                          {'\n'}
+                        </TextTimeLine>
+                      )
+                    }
+                    {
+                      showInfoIndex != index &&
+                      <>
+                        {item.Data.length > 0 &&
+                          <Text color={'#fff9'} size={12}>
+                            {item.Data}
+                          </Text>
+                        }
+                        {item.Maquina.length > 0 &&
+                          <Text color={'#fff9'} size={12}>
+                            Máquina: {item.Maquina}
+                          </Text>
+                        }
+
                         <Ionicons
                           name='information-circle-outline'
                           color={'#fff'}
                           size={18}
+                          style={{right: 0, position: 'absolute'}}
                         />
-
+                      </>
                     }
-                  </View>
 
-                  <Text color={'#fff5'} size={12}>
-                    Inicio: 01/01/2024 10:00
-                    {'\n'}
-                    Fim: 02/01/2024 05:00
-                  </Text>
+                  </TouchableOpacity>
+                </ScrollView>
 
-                </TouchableOpacity>
+
               </CircleView>
             ))}
           </TimeLineView>
         </ScrollView>
+        {fluxo === false &&
+          <Text size={20} weight={600} style={{marginBottom: 50}}>
+            Nenhum Fluxo encontrado
+          </Text>
+        }
       </ModalView>
     </Modalize>
   );
 }
+

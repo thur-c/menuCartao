@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar, View } from 'react-native';
+import React, { useEffect, useState, createContext } from 'react';
+import { StatusBar } from 'react-native';
 import { useFonts } from 'expo-font';
 import Home from './src/Screens/Home';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -8,8 +7,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import Main from './src/Screens/Main';
 import { RootStackParamList } from './src/@types/RootStackParamList';
 import Toast, { BaseToast, BaseToastProps, ErrorToast, InfoToast } from 'react-native-toast-message';
-import Graph from './src/components/ModalGraph';
-import ModalProblemas from './src/components/ModalProblemas';
+import { Camera } from 'expo-camera';
+import {LoginContextProvider} from './src/context/loginContext';
 
 
 export default function App() {
@@ -18,14 +17,21 @@ export default function App() {
     'GeneralSans-600': require('./src/assets/fonts/GeneralSans-Semibold.otf'),
     'GeneralSans-700': require('./src/assets/fonts/GeneralSans-Bold.otf'),
   });
-
+  const [, setHasPermission] = useState<boolean | null>(null);
   const Stack = createStackNavigator<RootStackParamList>();
+  useEffect(() => {
+    const getBarCameraPermissions = async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === 'granted');
+    };
+    getBarCameraPermissions();
+  }, []);
 
   function MyStack(){
     return(
       <Stack.Navigator screenOptions={{headerShown: false, animationEnabled: true}} >
-        <Stack.Screen name='Main'component={Main}/>
         <Stack.Screen  name='Home' component={Home}/>
+        <Stack.Screen name='Main'component={Main}/>
       </Stack.Navigator>
     );
   }
@@ -60,7 +66,7 @@ export default function App() {
           fontWeight: '500'
         }}
         text2Style={{
-          fontSize: 12,
+          fontSize: 16,
           fontWeight: '400'
         }}
       />
@@ -84,12 +90,15 @@ export default function App() {
 
 
   return (
-    <NavigationContainer >
-      <StatusBar backgroundColor={'#1c1917'}/>
-      <MyStack />
-      <Toast
+    <LoginContextProvider>
+      <NavigationContainer>
+        <StatusBar backgroundColor={'#1c1917'}/>
+        <MyStack />
+        <Toast
 
-        config={toastConfig}/>
-    </NavigationContainer>
+          config={toastConfig}/>
+      </NavigationContainer>
+    </LoginContextProvider>
+
   );
 }

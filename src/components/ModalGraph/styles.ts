@@ -1,7 +1,8 @@
 import styled from 'styled-components/native';
 import { Text } from '../../components/Text';
 
-export const MainContainer = styled.View`
+
+export const Overlay = styled.View`
   align-items: center;
   justify-content: center;
   background-color: rgba(0,0,0,0.8);
@@ -15,22 +16,19 @@ export const TextLabel = styled(Text)`
 
 export const ModalContainer = styled.View`
   border-radius: 12px;
-  background-color: #082f49;
+  background-color: #082f50;
   width: 380px;
-  max-height: 750px;
   align-items: center;
   justify-content: center;
-  flex: 1;
-
+  padding: 40px 0;
 `;
 export const GraphContainer = styled.View`
   border-radius: 8px;
   background-color: #eee;
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
   align-items: center;
   justify-content: center;
-  position: relative;
   margin-left: 20px;
 `;
 
@@ -41,28 +39,33 @@ interface LineProps{
 export const LineY = styled.View<LineProps>`
   width: 2px;
   height: 50%;
-  margin-left: 6px;
+  top: -3px;
+  left: 1px;
   background-color: ${(prop: LineProps) => prop.color};
 `;
 export const LineX = styled.View<LineProps>`
   height: 2px;
   width: 50%;
+  top: -3px;
   background-color: ${(prop: LineProps) => prop.color};
-  margin-top: 2px;
 `;
 export const TextX = styled.View`
   flex-direction: row;
-  justify-content: center;
   align-items: center;
-  gap: 13px;
-  margin-right: 5px;
+  gap: 8px;
+  left: -3px;
 `;
 export const TextY = styled.View`
-  justify-content: space-between;
   align-items: center;
-  padding: 20px 0;
+  justify-content: center;
+  gap: 18px;
 `;
 
+export const TextYBottom = styled.View`
+  gap: 10px;
+  justify-content: center;
+
+`;
 interface GridProps{
   spacingX: string;
   spacingY: string;
@@ -71,10 +74,8 @@ interface GridProps{
 
 export const GridX = styled.View<GridProps>`
   background-color: #0002;
-  flex: 1;
   height: 1px;
-  width: 300px;
-  position: absolute;
+  width: 250px;
   top: ${(prop: GridProps) => prop.spacingX}px;
 `;
 
@@ -82,7 +83,7 @@ export const GridY = styled.View<GridProps>`
   background-color: #0002;
   flex: 1;
   width: 1px;
-  height: 300px;
+  height: 250px;
   position: absolute;
   left: ${(prop: GridProps) => prop.spacingY}px;
 `;
@@ -90,100 +91,114 @@ export const SmallCircle = styled.View`
   width: 40px;
   height: 40px;
   position: absolute;
-  left: 132px;
-  top: 132px;
   border: 1px solid #0005;
   align-self: center;
   justify-self: center;
   border-radius: 999px;
+  left: 106px;
+  top: 106px;
 `;
 export const BigCircle = styled.View`
-  width: 80px;
-  height: 80px;
+  width: 72px;
+  height: 72px;
   position: absolute;
-  left: 112px;
-  top: 112px;
   background-color: #9994;
   align-self: center;
   justify-self: center;
   border-radius: 999px;
+  left: 90px;
+  top: 90px;
 `;
 
 interface BallProps{
   color: string;
-  left: string;
-  top: string;
+  x: string;
+  y: string;
 }
 
 export const Ball = styled.View<BallProps>`
   width: 10px;
-  border-radius: 999px;
   height: 10px;
   border-radius: 999px;
+  border-radius: 999px;
   background-color: ${(prop: BallProps) => prop.color};
-  left: ${(prop: BallProps) => prop.left}px;
-  top: ${(prop: BallProps) => prop.top}px;
+  left: ${(prop: BallProps) => prop.x}px;
+  top: ${(prop: BallProps) => prop.y}px;
   position: absolute;
 `;
 export const GraphBottomContainer = styled.View`
-  background-color: #eee;
-  width: 300px;
-  height: 150px;
   border-radius: 8px;
-  margin-top: 30px;
+  background-color: #eee;
+  width: 50px;
+  height: 250px;
   align-items: center;
   justify-content: center;
 `;
 
 interface GridBottomProps{
-  spacingY: string;
+  spacingX: string;
 }
 
-export const GridYBottom = styled.View<GridBottomProps>`
+export const GridXBottom = styled.View<GridBottomProps>`
   background-color: #0002;
-  flex: 1;
-  width: 1px;
-  height: 150px;
+  width: 100%;
+  height: 1px;
   position: absolute;
-  left: ${(prop: GridProps) => prop.spacingY}px;
+  top: ${(prop: GridProps) => prop.spacingX}px;
 `;
 
 
 export const GraphLineXBottom = styled.View`
   height: 2px;
-  width: 50%;
+  width: 100%;
   background-color: #000;
   margin-top: 2px;
 `;
 
 export const GraphLineYBottom = styled.View`
   width: 2px;
-  height: 50%;
+  height: 100%;
   margin-right: 6px;
-
+  background-color: #000;
+  position: absolute;
 `;
 
-export const ButtonsView = styled.View`
-  margin-top: 10px;
+export const GraphsView = styled.View`
+  align-items: center;
   flex-direction: row;
-  gap: 40px;
-  justify-content: center;
-  align-items: center;
+`;
 
-`;
-export const ButtonChangeTypeRed = styled.TouchableOpacity`
-  height: 50px;
-  width: 80px;
-  background-color: #f00;
-  justify-content: center;
+
+export const THeader = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px;
+  width: 100%;
+  min-height: 40px;
   align-items: center;
-  border-radius: 10px;
+  background-color: #222;
+  border: 1px solid #000;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 `;
-export const ButtonChangeTypeBlue = styled.TouchableOpacity`
-  height: 50px;
-  width: 80px;
-  background-color: #000FFF;
+
+export const Tbody = styled.View`
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+`;
+export const TableView = styled.View`
+  flex: 1;
   justify-content: center;
+`;
+
+interface TrowProps {
+  color: string;
+}
+
+export const TRow = styled.View<TrowProps>`
+  flex-direction: row;
   align-items: center;
-  border-radius: 10px;
+  padding: 5px;
+  background-color: ${(props: TrowProps) => props.color};
+  border: 1px solid #000;
 `;

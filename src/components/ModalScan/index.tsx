@@ -1,25 +1,33 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {useState, useEffect} from 'react';
 import { Alert, BackHandler } from 'react-native';
-import { CameraView, CloseButton, ModalBody, Overlay1, Overlay2 } from './styles';
-import { Camera, CameraType, WhiteBalance } from 'expo-camera';
+import { CameraButton, CameraView, CloseButton, ModalBody } from './styles';
+import { Camera, CameraType, FlashMode, WhiteBalance } from 'expo-camera';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../@types/RootStackParamList';
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
+import { useNavigation } from '@react-navigation/native';
+import { api } from '../../utils/api';
+import LoaderScreen from '../LoaderScreen';
+import { View } from 'react-native';
+import * as Icon from '@expo/vector-icons';
 
 interface ModalScanProps{
   isModalVisible: boolean;
   onClose: () => void;
-  data?: string;
-
 }
 
 type ModalScanScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 
-export default function ModalScan({ onClose, navigation}: ModalScanProps & ModalScanScreenProps){
+export default function ModalScan({ onClose }: ModalScanProps & ModalScanScreenProps){
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-
+  const navigation = useNavigation<any>();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [cameraType, setCameraType] = useState<CameraType | number>(0);
+  const [flash, setFlash] = useState<FlashMode>(FlashMode.off);
 
   function showErrorToast() {
     Toast.show({
@@ -50,17 +58,62 @@ export default function ModalScan({ onClose, navigation}: ModalScanProps & Modal
     onClose();
   }
 
-  function handleScanned({data}: ModalScanProps){
-    console.log(data);
-    if(data!.length <= 5 || data!.length > 6){
+  async function handleScanned(codigo: string){
+    setLoading(true);
+    await api.post('AbrideiraDesenroladeira/chama-dll?deviceName=TBT-CARTAO', {
+      nomeDll: 'ConsultaCartao',
+      parametros: [`${codigo}`]
+    }).then((response) => {
+      const cartao = response.data.data;
+      if(codigo != '' && codigo != null && cartao.Situacao === '0' ){
 
-      showErrorToast();
-    }
-    else{
-      navigation.navigate('Main');
-      console.log(data);
-      onClose();
-    }
+        const itemsToSend = {
+          artigo: cartao.Artigo,
+          cartao: cartao.Cartao,
+          codCli: cartao.CodCli,
+          cliente: cartao.NomCli,
+          status: cartao.SitCartao,
+          tipo: cartao.Tipo,
+          nota: cartao.Nota,
+          numPr: cartao.NumPr,
+          material: cartao.TipoArt,
+          composicao: cartao.Composicao,
+          cor: cartao.Cor,
+          rgb: cartao.CorRgb,
+          dataEntrada: cartao.DatEnt,
+          dataNota: cartao.DatNota,
+          emissao: cartao.DataCartao,
+          divisao: cartao.Divisao,
+          largCru: cartao.LarCru,
+          largSoli: cartao.LarSol,
+          largReali: cartao.LargReal,
+          gramaCru: cartao.GramaCru,
+          gramaRealiDataC: cartao.GramaRealDataC,
+          gramaRealRama: cartao.GramaRealRama,
+          gramaSoli: cartao.GramaSol,
+          obsSeiren: cartao.ObsCar,
+          obsCliente: cartao.ObsRom,
+          itemPecas: cartao.ItemPecas,
+        };
+        navigation.navigate('Main', itemsToSend);
+
+      }else{
+        setErrorMessage(cartao.Mensagem);
+        showErrorToast();
+      }
+
+    })
+      .catch((err) =>
+      {
+        Alert.alert('Ocorreu um erro!', errorMessage != '' ? errorMessage : err.message);
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Home' }],
+        });
+      }
+      ).finally(() => {
+        setLoading(false);
+      });
   }
 
   useEffect(() => {
@@ -76,25 +129,40 @@ export default function ModalScan({ onClose, navigation}: ModalScanProps & Modal
 
 
   return(
-    <ModalBody>
-      <CloseButton onPress={() => handleCloseButton()}>
+    <>
+      <LoaderScreen
+        isModaVisible={loading}
+      />
+      <ModalBody>
+        <CloseButton onPress={() => handleCloseButton()}>
 
-        <Ionicons
-          name="close"
-          color={'#000'}
-          size={24}
+          <Ionicons
+            name="close"
+            color={'#000'}
+            size={24}
+          />
+        </CloseButton>
+
+        <CameraView
+          type={cameraType}
+          flashMode={flash}
+          onBarCodeScanned={(a: any) => loading != true && handleScanned(a.data)}
         />
-      </CloseButton>
 
-      {/* <Overlay1/> */}
-      {/* <CameraView onBarCodeScanned={(data: ModalScanProps) => handleScanned(data)} /> */}
-      {/* <Overlay2/> */}
+        <View style={{position: 'absolute', bottom: 0, justifyContent: 'space-between', width: '100%', flexDirection: 'row',
+          padding: 20}}>
 
+          <CameraButton onPress={() => setCameraType(cameraType === 0 ? 1 : 0)}>
+            <Icon.Ionicons name="camera-reverse-outline" size={45} color="white" />
+          </CameraButton>
 
+          <CameraButton onPress={() => setFlash(flash === FlashMode.off ? FlashMode.torch : FlashMode.off)}>
+            <Icon.Ionicons name="flashlight-outline" size={45} color="white" />
+          </CameraButton>
 
-      <Camera  whiteBalance={WhiteBalance.auto}  onBarCodeScanned={(data) => Alert.alert(data.data)} style={{flex: 1, width: '100%'}} type={CameraType.front}></Camera>
+        </View>
+      </ModalBody>
+    </>
 
-
-    </ModalBody>
   );
 }

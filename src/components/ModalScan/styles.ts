@@ -8,34 +8,13 @@ export const ModalBody = styled.View`
 `;
 
 export const CameraView = styled(Camera)`
-flex: 1;
-width: 150%;
-max-height: 100%;
-z-index: -1;
-position: relative;
-`;
-
-export const Overlay1 = styled.View`
   flex: 1;
   width: 100%;
-  height: 40%;
-  background: rgba(0, 0, 0, 0.7);
-  align-items: center;
-  position: absolute;
-  z-index: 1;
-
+  z-index: -1;
+  position: relative;
 `;
 
-export const Overlay2 = styled.View`
-  flex: 1;
-  width: 100%;
-  height: 40%;
-  background: rgba(0, 0, 0, 0.7);
-  align-items: center;
-  position: absolute;
-  z-index: 1;
-  bottom: 0;
-`;
+
 
 export const CloseButton = styled.TouchableOpacity`
 background-color: #fff;
@@ -51,3 +30,11 @@ align-items: center;
 justify-content: center;
 `;
 
+export const CameraButton = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+  background-color: #0009;
+  width: 60px;
+  height: 60px;
+  border-radius: 20px;
+`;

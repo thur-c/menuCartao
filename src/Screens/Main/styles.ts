@@ -60,8 +60,28 @@ export const ViewMedidas = styled.View`
   z-index: 0;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+
+  padding: 15px;
+`;
+
+export const ViewLarg = styled.View`
   flex: 1;
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 15px;
+  justify-content: center;
+  background-color: #555;
+  border-radius: 5px;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0);
+  ${Platform.OS === 'ios' ? '' : 'elevation: 10;'}
+`;
+
+export const ViewGram = styled.View`
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #555;
+  border-radius: 5px;
+  justify-content: center;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0);
+  ${Platform.OS === 'ios' ? '' : 'elevation: 10;'}
 `;

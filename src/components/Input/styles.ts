@@ -15,13 +15,13 @@ export const MainContainer = styled.View<StyleMainContainerProps>`
 
 interface StyleInputProps {
   bgColor: string;
+  color: string;
 }
 
-
-export const InputContainer = styled.View<StyleInputProps>`
+export const InputContainer = styled.TouchableOpacity<StyleInputProps>`
   border-radius: 6px;
-  background-color: ${(props: { bgColor: string; }) => props.bgColor == null ? '#fff': props.bgColor};
-  border:  ${(props: { bgColor: string; }) => props.bgColor === 'rgb(0,0,0)' ? '1px solid #fff' : '0px solid #0000'} ;
+  background-color: ${(props: { bgColor: string; }) => props.bgColor == null ? '#fff': `rgb(${props.bgColor})`};
+  border: 1px solid ${(props: { color: string; }) => props.color} ;
   min-height: 36px;
   justify-content: center;
   align-items: flex-start;

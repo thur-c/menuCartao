@@ -3,7 +3,7 @@ import { Text } from '../Text';
 import { Platform } from 'react-native';
 
 export const ModalView = styled.View`
-  max-height: 700px;
+  max-height: 600px;
   align-items: center;
   justify-content: center;
   padding: 30px;
@@ -13,13 +13,13 @@ export const ModalView = styled.View`
 export const TimeLineView = styled.SafeAreaView`
   justify-content: center;
   min-width: 250px;
+
 `;
 export const LineView = styled.SafeAreaView`
   align-items: center;
-  justify-content: center;
   width: 30px;
-  height: 80px; /* ESPAÇO ENTRE AS BOLINHAS */
-
+  height: 100px; /* ESPAÇO ENTRE AS BOLINHAS */
+  justify-content: center;
 `;
 
 
@@ -28,19 +28,10 @@ interface StyleLineProps{
 }
 
 export const Line = styled.View`
-  background-color: ${(props: StyleLineProps) =>
-  {
-    if (props.color == 'finalizado') {
-      return 'green';
-    }else{
-      return '#fff5';
-    }
-  }
-};
-
-  height: 100%;
+  background-color: #fff;
+  height: 150%;
   width: 1px;
-  z-index: 0;
+  z-index: -10;
   position: absolute;
 
 `;
@@ -51,25 +42,10 @@ interface StyleTextProps{
 }
 
 export const TextTimeLine = styled(Text)<StyleTextProps>`
-text-align: center;
-font-size: ${(props: StyleTextProps) =>{
-    if (props.size == 'finalizado') {
-      return 12;
-    }
-    else  if (props.size == 'em_processo') {
-      return 22;
-    } else  {
-      return 12;
-    }
-  }}px;
-  color: ${(props: StyleTextProps) =>
-  {
-    if (props.size == 'em_processo') {
-      return '#FFF';
-    } else  {
-      return '#fff7';
-    }}
-};
+  font-size:  ${(props: StyleTextProps) => props.size}px;
+  color: ${(props: StyleTextProps) => props.color};
+  font-weight: bold;
+  width: 100%;
 `;
 
 
@@ -81,40 +57,10 @@ interface StyleCircleProps{
 
 
 export const Circle = styled.View<StyleCircleProps>`
-  width: ${(props: StyleCircleProps) => {
-    if (props.size == 'finalizado') {
-      return 18;
-    }
-    else  if (props.size == 'em_processo') {
-      return 28;
-    } else  {
-      return 14;
-    }
-  }}px;
-
-  min-height: ${(props: StyleCircleProps) => {
-    if (props.size == 'finalizado') {
-
-      return 18;
-    }
-    else  if (props.size == 'em_processo') {
-      return 28;
-    } else  {
-      return 14;
-    }
-  }}px;
-
-  background-color: ${(props: StyleCircleProps) => {
-    if (props.color == 'finalizado') {
-      return 'transparent';
-    }
-    else  if (props.color == 'em_processo') {
-      return '#fff';
-    } else  {
-      return '#fff3';
-    }
-  }};
-  z-index: 1;
+  width: ${(props: StyleCircleProps) => props.size}px;
+  min-height: ${(props: StyleCircleProps) => props.size}px;
+  color: ${(props: StyleCircleProps) => props.color};
+  z-index: 1000;
   border-radius: 999px;
   justify-content: center;
   align-items: center;
@@ -126,10 +72,9 @@ export const Circle = styled.View<StyleCircleProps>`
 `;
 export const CircleView = styled.SafeAreaView`
   flex-direction: row;
-  gap: 50px;
+  gap: 10px;
   align-items: center;
   z-index: 1;
-  justify-content: flex-start;
 
 `;
 

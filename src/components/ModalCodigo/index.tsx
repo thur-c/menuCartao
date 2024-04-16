@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from '../Text';
-import { Modal } from 'react-native';
+import {  Modal, TextInput } from 'react-native';
 import { ButtonSubmit, CloseButton, Input, InputView, ModalBody } from './styles';
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../@types/RootStackParamList';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { api } from '../../utils/api';
+import { useNavigation } from '@react-navigation/native';
+import LoaderScreen from '../LoaderScreen';
+import { Alert } from 'react-native';
 
 interface ModalCodigoProps{
 isModalVisible: boolean | number;
@@ -14,16 +17,14 @@ onClose: () => void;
 type ModalCodigoScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 
-export default function ModalCodigo({isModalVisible, onClose, navigation }: ModalCodigoProps & ModalCodigoScreenProps){
+export default function ModalCodigo({isModalVisible, onClose }: ModalCodigoProps & ModalCodigoScreenProps){
   const [codigo, setCodigo] = useState('');
   const [error, setError] = useState(false);
-  const storeData = async (value: string) => {
-    try {
-      await AsyncStorage.setItem('@codigo', value);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const navigation = useNavigation<any>();
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
 
 
   function handleCloseButton(){
@@ -32,54 +33,114 @@ export default function ModalCodigo({isModalVisible, onClose, navigation }: Moda
     onClose();
   }
 
-  function handleOkButton(){
-    if (codigo.length <= 5 || codigo.length > 6) {
-      setError(true);
-    }
-    else{
-      storeData(codigo);
-      setCodigo('');
-      setError(false);
-      navigation.navigate('Main');
-      onClose();
-    }
+  async function handleOkButton(){
+    setLoading(true);
+    await api.post('AbrideiraDesenroladeira/chama-dll?deviceName=TBT-CARTAO', {
+      nomeDll: 'ConsultaCartao',
+      parametros: [`${codigo}`]
+    }).then((response) => {
+      const cartao = response.data.data;
+      if(codigo != '' && codigo != null && cartao.Situacao === '0' ){
+
+        const itemsToSend = {
+          artigo: cartao.Artigo,
+          cartao: cartao.Cartao,
+          codCli: cartao.CodCli,
+          cliente: cartao.NomCli,
+          status: cartao.SitCartao,
+          tipo: cartao.Tipo,
+          nota: cartao.Nota,
+          numPr: cartao.NumPr,
+          material: cartao.TipoArt,
+          composicao: cartao.Composicao,
+          cor: cartao.Cor,
+          rgb: cartao.CorRgb,
+          dataEntrada: cartao.DatEnt,
+          dataNota: cartao.DatNota,
+          emissao: cartao.DataCartao,
+          divisao: cartao.Divisao,
+          largCru: cartao.LarCru,
+          largSoli: cartao.LarSol,
+          largReali: cartao.LargReal,
+          gramaCru: cartao.GramaCru,
+          gramaRealiDataC: cartao.GramaRealDataC,
+          gramaRealRama: cartao.GramaRealRama,
+          gramaSoli: cartao.GramaSol,
+          obsSeiren: cartao.ObsCar,
+          obsCliente: cartao.ObsRom,
+          itemPecas: cartao.ItemPecas,
+        };
+        navigation.navigate('Main', itemsToSend);
+        onClose();
+
+      }else{
+        setErrorMessage(cartao.Mensagem) ;
+        setError(true);
+      }
+
+    })
+      .catch((err) =>
+      {
+        Alert.alert('Ocorreu um erro!', errorMessage != '' ? errorMessage : err.message);
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Home' }],
+        });
+      }
+      ).finally(() => {
+        setCodigo('');
+        setLoading(false);
+      });
   }
 
   return(
-    <Modal
-      animationType='fade'
-      transparent
-      visible={isModalVisible == 1 ? true : false}
-      onRequestClose={onClose}
-    >
-      <ModalBody>
-        <InputView>
+    <>
+      <LoaderScreen
+        isModaVisible={loading}
+      />
+      <Modal
+        animationType='fade'
+        transparent
+        onRequestClose={handleCloseButton}
+        visible={isModalVisible == 1 ? true : false}
+      >
 
-          <CloseButton onPress={() => handleCloseButton()}>
-            <Ionicons
-              name="close"
-              color={'#000'}
-              size={24}
+        <ModalBody>
+          <InputView>
+            {/* <TextInput  ></TextInput> */}
+
+            <CloseButton onPress={() => handleCloseButton()}>
+              <Ionicons
+                name="close"
+                color={'#000'}
+                size={24}
+              />
+            </CloseButton>
+
+            <Text color={'#fff'} weight={600}>INSIRA O CÓDIGO DO CARTÃO:</Text>
+            <Input
+              style={{
+                borderWidth: error ? 2 : 0,
+                borderColor: error ? '#f00' : 'transparent',
+              }}
+              value={codigo}
+              keyboardType='number-pad'
+              onChangeText={(data: string) => setCodigo(data)}
+
             />
-          </CloseButton>
 
-          <Text color={'#fff'} weight={600}>INSIRA O CÓDIGO DO CARTÃO:</Text>
-          <Input style={{
-            borderWidth: error ? 2 : 0,
-            borderColor: error ? '#f00' : 'transparent',
-          }}
-          keyboardType='number-pad' onChangeText={(data: string) => setCodigo(data)}/>
+            {error == true &&
+              <Text size={12} weight={600} color={'#ff0000'}>{errorMessage}</Text>
+            }
+            <ButtonSubmit
+              onPress={() => handleOkButton()}
+            >
+              <Text weight={700}>OK</Text>
+            </ButtonSubmit>
+          </InputView>
+        </ModalBody>
+      </Modal>
+    </>
 
-          {error == true &&
-            <Text size={14} weight={600} color={'#f00'}>Insira um código válido!</Text>
-          }
-          <ButtonSubmit
-            onPress={() => handleOkButton()}
-          >
-            <Text weight={700}>OK</Text>
-          </ButtonSubmit>
-        </InputView>
-      </ModalBody>
-    </Modal>
   );
 }
